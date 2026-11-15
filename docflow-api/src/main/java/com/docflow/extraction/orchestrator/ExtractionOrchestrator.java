@@ -1,7 +1,7 @@
 package com.docflow.extraction.orchestrator;
 
 import com.docflow.extraction.classifier.JavaClassClassifier;
-import com.docflow.extraction.controller.ControllerExtract;
+import com.docflow.extraction.extract.ControllerExtract;
 import com.docflow.extraction.domain.model.ControllerInfo;
 import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import com.docflow.extraction.domain.model.ProjectModel;

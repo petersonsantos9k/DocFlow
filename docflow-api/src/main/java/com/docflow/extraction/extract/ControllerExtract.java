@@ -1,4 +1,4 @@
-package com.docflow.extraction.controller;
+package com.docflow.extraction.extract;
 
 import com.docflow.extraction.domain.exception.ExtractionException;
 import com.docflow.extraction.domain.model.ControllerInfo;

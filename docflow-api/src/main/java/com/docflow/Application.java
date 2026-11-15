@@ -10,8 +10,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
 
 @SpringBootApplication
 @EnableConfigurationProperties
