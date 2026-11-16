@@ -9,5 +9,6 @@ public record IngestionContext(
          String repo,
          String subPath,
          String urlRepositoryCloned,
-         Path workspacePath){
+         Path workspacePath,
+         Path sourceRoot){
 }

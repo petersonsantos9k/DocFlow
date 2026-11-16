@@ -1,5 +1,6 @@
 package com.docflow.ingestion.workspace;
 
+import com.docflow.ingestion.config.IngestionProperties;
 import com.docflow.ingestion.domain.exception.WorkspaceException;
 import com.docflow.ingestion.domain.model.WorkspaceInfo;
 import org.springframework.context.annotation.Primary;
@@ -14,19 +15,24 @@ import java.util.stream.Stream;
 
 @Component
 @Primary
-public class TmpWorkspaceProvider implements WorkspaceProvider{
+public class TemporaryWorkspaceProvider implements WorkspaceProvider{
+
+    private final Path workspaceRoot;
+
+    public TemporaryWorkspaceProvider(IngestionProperties properties) {
+        this.workspaceRoot = properties.getWorkspaceRoot()
+                .toAbsolutePath()
+                .normalize();
+    }
 
     @Override
     public WorkspaceInfo createWorkspace(){
         UUID id = UUID.randomUUID();
-        Path path = Path.of(
-                "/tmp/docflow/jobs",
-                id.toString()
-        );
+        Path path = workspaceRoot.resolve(id.toString());
         try{
             Files.createDirectories(path);
         } catch (IOException e) {
-            throw new WorkspaceException("Failed to create workspace: " + path, e);
+            throw new WorkspaceException("Failed to create workspace at '" + path + "'.", e);
         }
 
         return new WorkspaceInfo(id, path);
@@ -41,12 +47,16 @@ public class TmpWorkspaceProvider implements WorkspaceProvider{
                         try {
                             Files.delete(path);
                         } catch (IOException e) {
-                            throw new WorkspaceException("Failed to delete workspace: " + workspaceLocation.path(), e);
+                            throw new WorkspaceException(
+                                    "Failed to delete workspace at '"
+                                            + workspaceLocation.path() + "'.", e);
                         }
                     });
 
         } catch (IOException e) {
-            throw new WorkspaceException("Failed to delete workspace: " + workspaceLocation.path(), e);
+            throw new WorkspaceException(
+                    "Failed to delete workspace at '"
+                            + workspaceLocation.path() + "'.", e);
         }
     }
 

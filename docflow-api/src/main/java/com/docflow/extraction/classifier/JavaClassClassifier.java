@@ -20,11 +20,7 @@ public class JavaClassClassifier {
                 compilationUnit, CONTROLLER_ANNOTATIONS )){
             return JavaClassType.CONTROLLER;
         }
-
         return JavaClassType.UNKNOWN;
     }
-
-
-
 
 }

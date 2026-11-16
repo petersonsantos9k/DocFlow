@@ -1,6 +1,7 @@
 package com.docflow.extraction.orchestrator;
 
 import com.docflow.extraction.classifier.JavaClassClassifier;
+import com.docflow.extraction.domain.model.EndpointInfo;
 import com.docflow.extraction.extract.ControllerExtract;
 import com.docflow.extraction.domain.model.ControllerInfo;
 import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
@@ -52,6 +53,17 @@ public class ExtractionOrchestrator {
             controllersInfo.add(controllerExtract.extract(cu));
         }
 
+        List<String> listDtoResponse = new ArrayList<>();
+
+        for(ControllerInfo controllerInfo : controllersInfo){
+            listDtoResponse.addAll(controllerInfo
+                    .endpoints()
+                    .stream()
+                    .map(EndpointInfo::returnType)
+                    .toList()
+            );
+        }
+
 
 
         return new ProjectModel<>(
@@ -59,6 +71,16 @@ public class ExtractionOrchestrator {
                 controllersInfo,
                 null
         );
+    }
+
+
+
+    private String extractReturnType(String type){
+
+
+
+
+        return null;
     }
 
 

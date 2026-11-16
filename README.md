@@ -41,6 +41,28 @@ A aplicação fica disponível em [http://localhost:8080](http://localhost:8080)
 - `./mvnw test` — executa os testes automatizados
 - `./mvnw verify` — compila e valida o projeto
 
+## Configuração
+
+O módulo de ingestão pode ser configurado em `docflow-api/src/main/resources/application.yml`:
+
+```yaml
+docflow:
+  ingestion:
+    workspace-root: ${java.io.tmpdir}/docflow/jobs
+    max-repository-size: 100MB
+```
+
+- `workspace-root`: diretório onde os clones temporários são criados.
+- `max-repository-size`: tamanho máximo permitido para o repositório clonado.
+
+Para repositórios privados, configure o token via variável de ambiente:
+
+```bash
+export GITHUB_TOKEN=seu_token
+```
+
+O token é usado tanto na API do GitHub quanto no clone via JGit.
+
 ## Objetivos de qualidade
 
 O projeto adota princípios simples para manter código legível e fácil de evoluir:

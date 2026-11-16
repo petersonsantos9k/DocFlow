@@ -1,6 +1,6 @@
 package com.docflow.ingestion.domain.model;
 
-public record SourceInfo(
+public record RepositorySource(
         String owner,
         String repo,
         String subPath,

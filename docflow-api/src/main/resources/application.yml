@@ -12,12 +12,15 @@ spring:
       enabled: true
       path: /h2-console
 
-integration:
-  max-repository-size: 100MB
-  client:
+docflow:
+  ingestion:
+    workspace-root: ${java.io.tmpdir}/docflow/jobs
+    max-repository-size: 100MB
 
+integration:
+  client:
     github:
-        base-url: https://api.github.com
-        connect-timeout: 2s
-        read-timeout: 5s
-        token: ${GITHUB_TOKEN:}
+      base-url: https://api.github.com
+      connect-timeout: 2s
+      read-timeout: 5s
+      token: ${GITHUB_TOKEN:}
