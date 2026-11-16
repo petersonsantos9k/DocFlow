@@ -21,7 +21,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProjectModelPrinterTest {
+class DemoRunnerTest {
 
     @Test
     @DisplayName("Should print all ProjectModel data")
@@ -61,7 +61,7 @@ class ProjectModelPrinterTest {
                 List.of(controller),
                 List.of(schema));
 
-        String output = captureOutput(() -> new ProjectModelPrinter().print(projectModel));
+        String output = captureOutput(() -> DemoRunner.printProjectModel(projectModel));
 
         assertThat(output)
                 .contains("========== PROJECT MODEL ==========")

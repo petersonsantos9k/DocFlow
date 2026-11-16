@@ -1,7 +1,5 @@
 package com.docflow.extraction.orchestrator;
 
-import com.docflow.extraction.classifier.AnnotationClassifier;
-import com.docflow.extraction.classifier.JavaClassClassifier;
 import com.docflow.extraction.domain.model.ControllerInfo;
 import com.docflow.extraction.domain.model.EndpointInfo;
 import com.docflow.extraction.domain.model.FieldInfo;
@@ -13,7 +11,6 @@ import com.docflow.extraction.extract.ControllerExtractor;
 import com.docflow.extraction.extract.DtoExtractor;
 import com.docflow.extraction.extract.ProjectInfoExtractor;
 import com.docflow.extraction.scanner.JavaSourceAnalyzer;
-import com.docflow.extraction.scanner.JavaSourceFileScanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,9 +35,7 @@ class ExtractionOrchestratorTest {
     @BeforeEach
     void setUp() {
         extractionOrchestrator = new ExtractionOrchestrator(
-                new JavaSourceFileScanner(),
                 new JavaSourceAnalyzer(),
-                new JavaClassClassifier(new AnnotationClassifier()),
                 new ControllerExtractor(),
                 new DtoExtractor(),
                 new ProjectInfoExtractor()
