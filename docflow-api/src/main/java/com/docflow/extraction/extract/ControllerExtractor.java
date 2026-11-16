@@ -12,6 +12,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,10 @@ public class ControllerExtractor {
     private static final String PATH = "path";
     private static final String VALUE = "value";
     private static final String RESPONSE_STATUS = "ResponseStatus";
+    private static final String RESPONSE_ENTITY = "ResponseEntity";
+    private static final String CODE = "code";
+    private static final String STATUS = "status";
+    private static final int DEFAULT_STATUS = 200;
     private static final String PATH_VARIABLE = "PathVariable";
     private static final String REQUEST_PARAM = "RequestParam";
     private static final String REQUEST_HEADER = "RequestHeader";
@@ -39,6 +44,15 @@ public class ControllerExtractor {
             "PutMapping", "PUT",
             "PatchMapping", "PATCH",
             "DeleteMapping", "DELETE");
+    private static final Map<String, Integer> RESPONSE_ENTITY_STATUS = Map.ofEntries(
+            Map.entry("ok", 200),
+            Map.entry("created", 201),
+            Map.entry("accepted", 202),
+            Map.entry("noContent", 204),
+            Map.entry("badRequest", 400),
+            Map.entry("notFound", 404),
+            Map.entry("unprocessableEntity", 422),
+            Map.entry("internalServerError", 500));
 
     public ControllerInfo extract(CompilationUnit cu, TypeIndex typeIndex) {
         TypeDeclaration<?> type = cu.getPrimaryType()
@@ -74,7 +88,9 @@ public class ControllerExtractor {
                         joinPaths(basePath, mapping.path()),
                         extractParameters(method),
                         method.getType().asString(),
-                        readResponseStatus(method),
+                        readResponseStatus(method)
+                                .or(() -> readStatusFromBody(method))
+                                .orElse(DEFAULT_STATUS),
                         dtoTypeResolver.resolve(method, cu)));
     }
 
@@ -187,14 +203,74 @@ public class ControllerExtractor {
         return true;
     }
 
-    private Integer readResponseStatus(MethodDeclaration method) {
+    private Optional<Integer> readResponseStatus(MethodDeclaration method) {
         return method.getAnnotationByName(RESPONSE_STATUS)
-                .filter(AnnotationExpr::isSingleMemberAnnotationExpr)
-                .map(annotation -> annotation.asSingleMemberAnnotationExpr().getMemberValue())
-                .filter(Expression::isFieldAccessExpr)
-                .map(expression -> HttpStatus.valueOf(
-                        expression.asFieldAccessExpr().getNameAsString()).value())
-                .orElse(null);
+                .flatMap(this::readStatusFromAnnotation);
+    }
+
+    private Optional<Integer> readStatusFromAnnotation(AnnotationExpr annotation) {
+        if (annotation.isSingleMemberAnnotationExpr()) {
+            return readStatusValue(
+                    annotation.asSingleMemberAnnotationExpr().getMemberValue());
+        }
+
+        if (annotation.isNormalAnnotationExpr()) {
+            return annotation.asNormalAnnotationExpr().getPairs().stream()
+                    .filter(pair -> pair.getNameAsString().equals(VALUE)
+                            || pair.getNameAsString().equals(CODE))
+                    .findFirst()
+                    .flatMap(pair -> readStatusValue(pair.getValue()));
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<Integer> readStatusValue(Expression expression) {
+        if (expression.isFieldAccessExpr()) {
+            String name = expression.asFieldAccessExpr().getNameAsString();
+            try {
+                return Optional.of(HttpStatus.valueOf(name).value());
+            } catch (IllegalArgumentException exception) {
+                return Optional.empty();
+            }
+        }
+
+        if (expression.isIntegerLiteralExpr()) {
+            try {
+                return Optional.of(expression.asIntegerLiteralExpr().asInt());
+            } catch (NumberFormatException exception) {
+                return Optional.empty();
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<Integer> readStatusFromBody(MethodDeclaration method) {
+        return method.findAll(MethodCallExpr.class).stream()
+                .filter(this::isResponseEntityCall)
+                .map(this::readStatusFromResponseEntityCall)
+                .flatMap(Optional::stream)
+                .findFirst();
+    }
+
+    private boolean isResponseEntityCall(MethodCallExpr call) {
+        return call.getScope()
+                .filter(Expression::isNameExpr)
+                .map(scope -> scope.asNameExpr().getNameAsString().equals(
+                        RESPONSE_ENTITY))
+                .orElse(false);
+    }
+
+    private Optional<Integer> readStatusFromResponseEntityCall(MethodCallExpr call) {
+        if (call.getNameAsString().equals(STATUS)) {
+            return call.getArguments().stream()
+                    .findFirst()
+                    .flatMap(this::readStatusValue);
+        }
+
+        return Optional.ofNullable(
+                RESPONSE_ENTITY_STATUS.get(call.getNameAsString()));
     }
 
     private String joinPaths(String base, String path) {

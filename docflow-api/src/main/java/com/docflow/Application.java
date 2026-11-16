@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 @EnableConfigurationProperties(IngestionProperties.class)
 public class Application {
 
-	public static void main(String[] args) {
+	static void main(String[] args) {
 		var builder = new SpringApplicationBuilder(Application.class);
 		builder.run(args);
 

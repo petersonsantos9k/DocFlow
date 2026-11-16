@@ -7,6 +7,7 @@ import com.docflow.extraction.domain.model.ProjectInfo;
 import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import com.docflow.extraction.domain.model.ProjectModel;
 import com.docflow.extraction.domain.model.SchemaInfo;
+import com.docflow.extraction.domain.model.ValidationInfo;
 import com.docflow.extraction.extract.ControllerExtractor;
 import com.docflow.extraction.extract.DtoExtractor;
 import com.docflow.extraction.extract.ProjectInfoExtractor;
@@ -110,7 +111,15 @@ class ExtractionOrchestratorTest {
                 public record UserResponseDTO(
                         UUID id,
                         String name,
-                        String email) {
+                        String email,
+                        AddressDTO address) {
+                }
+                """);
+
+        writeSource("com/example/user/dto/AddressDTO.java", """
+                package com.example.user.dto;
+
+                public record AddressDTO(String street, String city) {
                 }
                 """);
 
@@ -180,21 +189,32 @@ class ExtractionOrchestratorTest {
         Map<String, SchemaInfo> schemas = projectModel.schemas().stream()
                 .collect(Collectors.toMap(SchemaInfo::name, Function.identity()));
 
-        assertThat(schemas).containsKeys("UserRequestDTO", "UserResponseDTO");
+        assertThat(schemas).containsKeys(
+                "UserRequestDTO", "UserResponseDTO", "AddressDTO");
 
         SchemaInfo requestSchema = schemas.get("UserRequestDTO");
         assertThat(requestSchema.kind()).isEqualTo("DTO");
         assertThat(requestSchema.fields())
                 .extracting(FieldInfo::name)
                 .containsExactlyInAnyOrder("name", "email", "age");
-        assertThat(field(requestSchema, "name").validations()).containsExactly("NotBlank");
-        assertThat(field(requestSchema, "email").validations()).containsExactly("Email");
-        assertThat(field(requestSchema, "age").validations()).containsExactly("Min", "Max");
+        assertThat(field(requestSchema, "name").validations())
+                .containsExactly(new ValidationInfo("NotBlank", Map.of()));
+        assertThat(field(requestSchema, "email").validations())
+                .containsExactly(new ValidationInfo("Email", Map.of()));
+        assertThat(field(requestSchema, "age").validations())
+                .containsExactly(
+                        new ValidationInfo("Min", Map.of("value", "18")),
+                        new ValidationInfo("Max", Map.of("value", "120")));
 
         SchemaInfo responseSchema = schemas.get("UserResponseDTO");
         assertThat(responseSchema.fields())
                 .extracting(FieldInfo::name)
-                .containsExactlyInAnyOrder("id", "name", "email");
+                .containsExactlyInAnyOrder("id", "name", "email", "address");
+
+        SchemaInfo addressSchema = schemas.get("AddressDTO");
+        assertThat(addressSchema.fields())
+                .extracting(FieldInfo::name)
+                .containsExactly("street", "city");
     }
 
     @Test

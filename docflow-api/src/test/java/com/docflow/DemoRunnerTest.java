@@ -8,6 +8,7 @@ import com.docflow.extraction.domain.model.ProjectInfo;
 import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import com.docflow.extraction.domain.model.ProjectModel;
 import com.docflow.extraction.domain.model.SchemaInfo;
+import com.docflow.extraction.domain.model.ValidationInfo;
 import com.docflow.extraction.domain.model.enums.ParameterLocation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,8 +55,14 @@ class DemoRunnerTest {
                 "UserRequestDTO",
                 "DTO",
                 new LinkedHashSet<>(List.of(
-                        new FieldInfo("name", "String", List.of("NotBlank")),
-                        new FieldInfo("email", "String", List.of("Email")))));
+                        new FieldInfo(
+                                "name",
+                                "String",
+                                List.of(new ValidationInfo("NotBlank", Map.of()))),
+                        new FieldInfo(
+                                "email",
+                                "String",
+                                List.of(new ValidationInfo("Email", Map.of()))))));
 
         ProjectModel<ProjectInfoSpringBoot> projectModel = new ProjectModel<>(
                 project,

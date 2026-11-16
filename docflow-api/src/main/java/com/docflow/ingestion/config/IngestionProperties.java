@@ -1,6 +1,7 @@
 package com.docflow.ingestion.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.util.unit.DataSize;
 
 import java.nio.file.Path;
