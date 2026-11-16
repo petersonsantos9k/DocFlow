@@ -38,6 +38,7 @@ public class GitRepositorySourceProvider implements SourceProvider {
                 .setURI(sourceInfo.cloneUrl())
                 .setDirectory(workspacePath.toFile())
                 .setDepth(1)
+                .setTimeout(60)
                 .setCloneSubmodules(false);
 
         String token = gitHubClientProperties.getToken();

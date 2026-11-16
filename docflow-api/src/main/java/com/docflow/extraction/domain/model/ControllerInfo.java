@@ -4,8 +4,8 @@ import java.util.List;
 
 public record ControllerInfo(
         String name,
+        String packageName,
         String basePath,
-        String javadoc,
         List<EndpointInfo> endpoints
 ) {
 }
