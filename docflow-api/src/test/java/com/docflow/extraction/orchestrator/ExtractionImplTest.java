@@ -25,16 +25,16 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ExtractionOrchestratorTest {
+class ExtractionImplTest {
 
     @TempDir
     Path tempDir;
 
-    private ExtractionOrchestrator extractionOrchestrator;
+    private ExtractionImpl extractionImpl;
 
     @BeforeEach
     void setUp() {
-        extractionOrchestrator = new ExtractionOrchestrator(
+        extractionImpl = new ExtractionImpl(
                 new JavaSourceAnalyzer(),
                 new ControllerExtractor(),
                 new DtoExtractor(),
@@ -149,7 +149,7 @@ class ExtractionOrchestratorTest {
                 """);
 
         ProjectModel projectModel =
-                extractionOrchestrator.extract(tempDir);
+                extractionImpl.extract(tempDir);
 
         ProjectInfo project = projectModel.info();
         assertThat(project.name()).isEqualTo("User API");
@@ -236,7 +236,7 @@ class ExtractionOrchestratorTest {
                 """);
 
         ProjectModel projectModel =
-                extractionOrchestrator.extract(tempDir);
+                extractionImpl.extract(tempDir);
 
         assertThat(projectModel.controllers()).hasSize(1);
         assertThat(projectModel.controllers().getFirst().name()).isEqualTo("OkController");

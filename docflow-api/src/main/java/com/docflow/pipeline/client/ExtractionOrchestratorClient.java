@@ -1,7 +1,7 @@
 package com.docflow.pipeline.client;
 
 import com.docflow.extraction.domain.model.ProjectModel;
-import com.docflow.extraction.orchestrator.ExtractionOrchestrator;
+import com.docflow.extraction.orchestrator.ExtractionImpl;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
@@ -9,14 +9,14 @@ import java.nio.file.Path;
 @Component
 public class ExtractionOrchestratorClient {
 
-    private final ExtractionOrchestrator extractionOrchestrator;
+    private final ExtractionImpl extractionImpl;
 
     public ExtractionOrchestratorClient(
-            ExtractionOrchestrator extractionOrchestrator) {
-        this.extractionOrchestrator = extractionOrchestrator;
+            ExtractionImpl extractionImpl) {
+        this.extractionImpl = extractionImpl;
     }
 
     public ProjectModel extract(Path sourceRoot) {
-        return extractionOrchestrator.extract(sourceRoot);
+        return extractionImpl.extract(sourceRoot);
     }
 }

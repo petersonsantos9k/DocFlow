@@ -21,7 +21,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class ExtractionOrchestrator {
+public class ExtractionImpl {
 
     private final JavaSourceAnalyzer sourceAnalyzer;
     private final ControllerExtractor controllerExtractor;

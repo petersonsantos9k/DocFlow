@@ -7,7 +7,7 @@ import com.docflow.ingestion.domain.exception.SourceException;
 import com.docflow.ingestion.domain.model.GitHubRepositoryInfo;
 import com.docflow.ingestion.domain.model.IngestionContext;
 import com.docflow.ingestion.domain.model.RepositorySource;
-import com.docflow.ingestion.orchestrator.IngestionService;
+import com.docflow.ingestion.orchestrator.IngestionImpl;
 import com.docflow.ingestion.orchestrator.IngestionSession;
 import com.docflow.ingestion.source.GitHubRepositoryUrlParser;
 import com.docflow.ingestion.source.GitRepositorySourceProvider;
@@ -41,7 +41,7 @@ class IngestionFlowIntegrationTest {
     void shouldIngestLocalRepositoryAndCleanUpWorkspace() throws IOException, GitAPIException {
         Path repository = createRepository();
         IngestionProperties properties = ingestionProperties();
-        IngestionService service = ingestionService(repository, properties);
+        IngestionImpl service = ingestionService(repository, properties);
 
         Path workspace;
         try (IngestionSession session = service.ingest(URL)) {
@@ -65,7 +65,7 @@ class IngestionFlowIntegrationTest {
     @DisplayName("Should clean up the workspace when the clone fails")
     void shouldCleanUpWorkspaceWhenCloneFails() throws IOException {
         IngestionProperties properties = ingestionProperties();
-        IngestionService service = ingestionService(
+        IngestionImpl service = ingestionService(
                 tempDir.resolve("missing-repository"),
                 properties);
 
@@ -78,7 +78,7 @@ class IngestionFlowIntegrationTest {
         }
     }
 
-    private IngestionService ingestionService(
+    private IngestionImpl ingestionService(
             Path repositoryPath,
             IngestionProperties properties) {
         GitHubClientProperties gitHubProperties = new GitHubClientProperties();
@@ -98,7 +98,7 @@ class IngestionFlowIntegrationTest {
         RepositoryMetadataClient metadataClient = (owner, repo) ->
                 Optional.of(new GitHubRepositoryInfo(false, 0, "Java"));
 
-        return new IngestionService(
+        return new IngestionImpl(
                 sourceProvider,
                 new TemporaryWorkspaceProvider(properties),
                 metadataClient,

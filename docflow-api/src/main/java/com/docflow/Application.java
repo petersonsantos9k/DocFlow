@@ -1,12 +1,11 @@
 package com.docflow;
 
-import com.docflow.ingestion.config.IngestionProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
-@EnableConfigurationProperties(IngestionProperties.class)
+@ConfigurationPropertiesScan
 public class Application {
 
 	static void main(String[] args) {

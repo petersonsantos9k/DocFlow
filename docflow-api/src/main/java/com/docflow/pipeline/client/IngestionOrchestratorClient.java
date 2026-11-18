@@ -1,15 +1,15 @@
 package com.docflow.pipeline.client;
 
-import com.docflow.ingestion.orchestrator.IngestionService;
+import com.docflow.ingestion.orchestrator.IngestionImpl;
 import com.docflow.ingestion.orchestrator.IngestionSession;
 import org.springframework.stereotype.Component;
 
 @Component
 public class IngestionOrchestratorClient {
 
-    private final IngestionService ingestionService;
+    private final IngestionImpl ingestionService;
 
-    public IngestionOrchestratorClient(IngestionService ingestionService) {
+    public IngestionOrchestratorClient(IngestionImpl ingestionService) {
         this.ingestionService = ingestionService;
     }
 

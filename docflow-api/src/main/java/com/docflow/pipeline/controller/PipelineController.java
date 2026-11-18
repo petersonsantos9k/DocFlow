@@ -2,6 +2,7 @@ package com.docflow.pipeline.controller;
 
 import com.docflow.extraction.domain.model.ProjectModel;
 import com.docflow.pipeline.dto.request.PipelineRequest;
+import com.docflow.pipeline.dto.response.PipelineResponse;
 import com.docflow.pipeline.service.PipelineService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class PipelineController {
     }
 
     @PostMapping
-    public ProjectModel run(@Valid @RequestBody PipelineRequest request) {
+    public PipelineResponse run(@Valid @RequestBody PipelineRequest request) {
         return pipelineService.run(request.repositoryUrl());
     }
 }

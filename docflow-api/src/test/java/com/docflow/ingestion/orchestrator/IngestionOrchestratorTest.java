@@ -35,7 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class IngestionServiceTest {
+class IngestionOrchestratorTest {
 
     private static final String URL =
             "https://github.com/petersonsantos9k/picpay-desafio-backend";
@@ -49,7 +49,7 @@ class IngestionServiceTest {
     @TempDir
     Path tempDir;
 
-    private IngestionService ingestionService;
+    private IngestionImpl ingestionService;
     private IngestionProperties ingestionProperties;
     private RepositorySource sourceInfo;
     private WorkspaceInfo workspaceInfo;
@@ -59,7 +59,7 @@ class IngestionServiceTest {
         ingestionProperties = new IngestionProperties();
         ingestionProperties.setMaxRepositorySize(DataSize.ofMegabytes(30));
 
-        ingestionService = new IngestionService(
+        ingestionService = new IngestionImpl(
                 sourceProvider,
                 workspaceProvider,
                 repositoryClient,
@@ -192,7 +192,7 @@ class IngestionServiceTest {
         IngestionProperties limitedProperties = new IngestionProperties();
         limitedProperties.setMaxRepositorySize(DataSize.ofBytes(10));
 
-        IngestionService limitedOrchestrator = new IngestionService(
+        IngestionImpl limitedOrchestrator = new IngestionImpl(
                 sourceProvider,
                 workspaceProvider,
                 repositoryClient,
