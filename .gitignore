@@ -13,10 +13,10 @@
 *.tar.gz
 *.rar
 
-# Spring Initializr boilerplate
+# Spring Initializr
 docflow-api/HELP.md
 
-# Keep the Maven wrapper jar (the *.jar rule above would ignore it and break ./mvnw)
+# Maven Wrapper
 !**/.mvn/wrapper/maven-wrapper.jar
 
 # JVM crash logs
@@ -24,11 +24,11 @@ hs_err_pid*
 replay_pid*
 
 # ---------- Build output ----------
-target/
-build/
+**/target/
+**/build/
 
 # ---------- IDEs ----------
-.idea/
+**/.idea/
 *.iml
 .vscode/
 .classpath
@@ -38,23 +38,52 @@ build/
 .apt_generated/
 .sts4/
 
-# ---------- Secrets and local config ----------
-.env
-.env.*
+# ---------- Environment files ----------
+.env*
 !.env.example
+!.env.*.example
+
+# Backend local configuration
 application-local.yml
 application-local.yaml
 application-local.properties
 
-# ---------- Docflow generated files ----------
+# ---------- DocFlow generated files ----------
 docflow-api/output/
-/tmp/
 
-# ---------- Future frontend (Next.js) ----------
-node_modules/
-.next/
-out/
-dist/
+# ---------- Frontend / Node.js ----------
+**/node_modules/
+**/.pnp
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/versions
+
+# Next.js
+**/.next/
+**/out/
+**/.vercel/
+
+# Production
+**/dist/
+
+# Testing
+**/coverage/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc
+*.pem
 
 # ---------- OS ----------
 .DS_Store
