@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
-public class IngestionService {
+public class IngestionOrchestrator {
 
     private final SourceProvider sourceProvider;
     private final WorkspaceProvider workspaceProvider;
@@ -31,7 +31,7 @@ public class IngestionService {
     private final DataSize maxRepositorySize;
 
 
-    public IngestionService(
+    public IngestionOrchestrator(
             @Qualifier("jGitSourceProvider") SourceProvider sourceProvider,
             @Qualifier("temporaryWorkspaceProvider") WorkspaceProvider workspaceProvider,
             @Qualifier("gitHubRepositoryClient") RepositoryMetadataClient repositoryClient,

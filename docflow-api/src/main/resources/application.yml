@@ -16,6 +16,12 @@ docflow:
   ingestion:
     workspace-root: ${java.io.tmpdir}/docflow/jobs
     max-repository-size: 100MB
+  llm:
+    base-url: https://api.deepseek.com
+    api-key: ${DEEPSEEK_API_KEY}
+    model: deepseek-chat
+    timeout: 60s
+    temperature: 0.2
 
 integration:
   client:
