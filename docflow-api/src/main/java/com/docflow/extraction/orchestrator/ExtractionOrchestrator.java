@@ -2,7 +2,6 @@ package com.docflow.extraction.orchestrator;
 
 import com.docflow.extraction.domain.model.ControllerInfo;
 import com.docflow.extraction.domain.model.ProjectInfo;
-import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import com.docflow.extraction.domain.model.ProjectModel;
 import com.docflow.extraction.domain.model.SchemaInfo;
 import com.docflow.extraction.extract.ControllerExtractor;
@@ -29,18 +28,17 @@ public class ExtractionOrchestrator {
     private final DtoExtractor dtoExtractor;
     private final ProjectInfoExtractor projectInfoExtractor;
 
-    public ProjectModel<ProjectInfoSpringBoot> extract(Path rootPath) {
+    public ProjectModel extract(Path rootPath) {
         List<CompilationUnit> compilationUnits = sourceAnalyzer.analyzeProject(rootPath);
 
-        ProjectInfo<ProjectInfoSpringBoot> projectInfo =
-                projectInfoExtractor.extract(rootPath);
+        ProjectInfo projectInfo = projectInfoExtractor.extract(rootPath);
 
         TypeIndex typeIndex = TypeIndex.from(compilationUnits);
         List<ControllerInfo> controllers = extractControllers(compilationUnits, typeIndex);
         Set<String> dtoNames = collectDtoNames(controllers);
         List<SchemaInfo> schemas = dtoExtractor.extract(dtoNames, typeIndex);
 
-        return new ProjectModel<>(
+        return new ProjectModel(
                 projectInfo,
                 controllers,
                 schemas

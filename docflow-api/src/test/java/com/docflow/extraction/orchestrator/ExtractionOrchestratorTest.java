@@ -4,7 +4,6 @@ import com.docflow.extraction.domain.model.ControllerInfo;
 import com.docflow.extraction.domain.model.EndpointInfo;
 import com.docflow.extraction.domain.model.FieldInfo;
 import com.docflow.extraction.domain.model.ProjectInfo;
-import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import com.docflow.extraction.domain.model.ProjectModel;
 import com.docflow.extraction.domain.model.SchemaInfo;
 import com.docflow.extraction.domain.model.ValidationInfo;
@@ -149,15 +148,15 @@ class ExtractionOrchestratorTest {
                 </project>
                 """);
 
-        ProjectModel<ProjectInfoSpringBoot> projectModel =
+        ProjectModel projectModel =
                 extractionOrchestrator.extract(tempDir);
 
-        ProjectInfo<ProjectInfoSpringBoot> project = projectModel.project();
+        ProjectInfo project = projectModel.info();
         assertThat(project.name()).isEqualTo("User API");
         assertThat(project.buildTool()).isEqualTo("Maven");
         assertThat(project.javaVersion()).isEqualTo("21");
-        assertThat(project.type().springBootVersion()).isEqualTo("3.3.0");
-        assertThat(project.type().dependencies())
+        assertThat(project.springBootVersion()).isEqualTo("3.3.0");
+        assertThat(project.dependencies())
                 .containsExactly("spring-boot-starter-web", "spring-boot-starter-validation");
 
         assertThat(projectModel.controllers()).hasSize(1);
@@ -236,7 +235,7 @@ class ExtractionOrchestratorTest {
                 }
                 """);
 
-        ProjectModel<ProjectInfoSpringBoot> projectModel =
+        ProjectModel projectModel =
                 extractionOrchestrator.extract(tempDir);
 
         assertThat(projectModel.controllers()).hasSize(1);

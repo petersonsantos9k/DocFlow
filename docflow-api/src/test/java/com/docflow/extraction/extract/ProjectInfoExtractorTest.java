@@ -1,7 +1,6 @@
 package com.docflow.extraction.extract;
 
 import com.docflow.extraction.domain.model.ProjectInfo;
-import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -48,14 +47,14 @@ class ProjectInfoExtractorTest {
                 </project>
                 """);
 
-        ProjectInfo<ProjectInfoSpringBoot> project =
+        ProjectInfo project =
                 projectInfoExtractor.extract(tempDir);
 
         assertThat(project.name()).isEqualTo("User API");
         assertThat(project.buildTool()).isEqualTo("Maven");
         assertThat(project.javaVersion()).isEqualTo("21");
-        assertThat(project.type().springBootVersion()).isEqualTo("3.3.0");
-        assertThat(project.type().dependencies())
+        assertThat(project.springBootVersion()).isEqualTo("3.3.0");
+        assertThat(project.dependencies())
                 .containsExactly("spring-boot-starter-web", "spring-boot-starter-validation");
     }
 
@@ -64,26 +63,26 @@ class ProjectInfoExtractorTest {
     void shouldDetectGradleProject() throws IOException {
         Files.writeString(tempDir.resolve("build.gradle"), "");
 
-        ProjectInfo<ProjectInfoSpringBoot> project =
+        ProjectInfo project =
                 projectInfoExtractor.extract(tempDir);
 
         assertThat(project.name()).isEqualTo(tempDir.getFileName().toString());
         assertThat(project.buildTool()).isEqualTo("Gradle");
         assertThat(project.javaVersion()).isNull();
-        assertThat(project.type().springBootVersion()).isNull();
-        assertThat(project.type().dependencies()).isEmpty();
+        assertThat(project.springBootVersion()).isNull();
+        assertThat(project.dependencies()).isEmpty();
     }
 
     @Test
     @DisplayName("Should return basic project info when no build file exists")
     void shouldReturnBasicProjectInfoWithoutBuildFile() {
-        ProjectInfo<ProjectInfoSpringBoot> project =
+        ProjectInfo project =
                 projectInfoExtractor.extract(tempDir);
 
         assertThat(project.name()).isEqualTo(tempDir.getFileName().toString());
         assertThat(project.buildTool()).isEqualTo("Unknown");
         assertThat(project.javaVersion()).isNull();
-        assertThat(project.type()).isNotNull();
-        assertThat(project.type().dependencies()).isEmpty();
+        assertThat(project.springBootVersion()).isNull();
+        assertThat(project.dependencies()).isEmpty();
     }
 }

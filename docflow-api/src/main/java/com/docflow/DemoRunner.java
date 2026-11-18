@@ -5,7 +5,6 @@ import com.docflow.extraction.domain.model.EndpointInfo;
 import com.docflow.extraction.domain.model.FieldInfo;
 import com.docflow.extraction.domain.model.ParameterInfo;
 import com.docflow.extraction.domain.model.ProjectInfo;
-import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import com.docflow.extraction.domain.model.ProjectModel;
 import com.docflow.extraction.domain.model.SchemaInfo;
 import com.docflow.extraction.orchestrator.ExtractionOrchestrator;
@@ -31,16 +30,16 @@ public class DemoRunner {
 
     public void run() {
         try (IngestionSession session = ingestionService.ingest(REPOSITORY_URL)) {
-            ProjectModel<ProjectInfoSpringBoot> projectModel =
+            ProjectModel projectModel =
                     extractionOrchestrator.extract(session.sourceRoot());
 
             printProjectModel(projectModel);
         }
     }
 
-    static void printProjectModel(ProjectModel<?> projectModel) {
+    static void printProjectModel(ProjectModel projectModel) {
         IO.println("========== PROJECT MODEL ==========");
-        printProject(projectModel.project());
+        printProject(projectModel.info());
 
         IO.println();
         IO.println("Controllers: " + projectModel.controllers().size());
@@ -55,7 +54,7 @@ public class DemoRunner {
         }
     }
 
-    private static void printProject(ProjectInfo<?> project) {
+    private static void printProject(ProjectInfo project) {
         if (project == null) {
             IO.println("Project: not available");
             return;
@@ -64,13 +63,8 @@ public class DemoRunner {
         IO.println("Project: " + project.name());
         IO.println("  Build tool:   " + project.buildTool());
         IO.println("  Java version: " + project.javaVersion());
-
-        if (project.type() instanceof ProjectInfoSpringBoot springBoot) {
-            IO.println("  Spring Boot:  " + springBoot.springBootVersion());
-            IO.println("  Dependencies: " + springBoot.dependencies());
-        } else {
-            IO.println("  Type:         " + project.type());
-        }
+        IO.println("  Spring Boot:  " + project.springBootVersion());
+        IO.println("  Dependencies: " + project.dependencies());
     }
 
     private static void printController(ControllerInfo controller) {

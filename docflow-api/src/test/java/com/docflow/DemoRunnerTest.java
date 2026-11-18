@@ -5,7 +5,6 @@ import com.docflow.extraction.domain.model.EndpointInfo;
 import com.docflow.extraction.domain.model.FieldInfo;
 import com.docflow.extraction.domain.model.ParameterInfo;
 import com.docflow.extraction.domain.model.ProjectInfo;
-import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import com.docflow.extraction.domain.model.ProjectModel;
 import com.docflow.extraction.domain.model.SchemaInfo;
 import com.docflow.extraction.domain.model.ValidationInfo;
@@ -28,11 +27,12 @@ class DemoRunnerTest {
     @Test
     @DisplayName("Should print all ProjectModel data")
     void shouldPrintProjectModel() {
-        ProjectInfo<ProjectInfoSpringBoot> project = new ProjectInfo<>(
+        ProjectInfo project = new ProjectInfo(
                 "Demo API",
                 "Maven",
                 "21",
-                new ProjectInfoSpringBoot("3.3.0", Set.of("spring-boot-starter-web")));
+                "3.3.0",
+                Set.of("spring-boot-starter-web"));
 
         ControllerInfo controller = new ControllerInfo(
                 "UserController",
@@ -64,7 +64,7 @@ class DemoRunnerTest {
                                 "String",
                                 List.of(new ValidationInfo("Email", Map.of()))))));
 
-        ProjectModel<ProjectInfoSpringBoot> projectModel = new ProjectModel<>(
+        ProjectModel projectModel = new ProjectModel(
                 project,
                 List.of(controller),
                 List.of(schema));

@@ -1,7 +1,6 @@
 package com.docflow.extraction.extract;
 
 import com.docflow.extraction.domain.model.ProjectInfo;
-import com.docflow.extraction.domain.model.ProjectInfoSpringBoot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -21,7 +20,7 @@ import java.util.Set;
 @Component
 public class ProjectInfoExtractor {
 
-    public ProjectInfo<ProjectInfoSpringBoot> extract(Path rootPath) {
+    public ProjectInfo extract(Path rootPath) {
         Path pom = rootPath.resolve("pom.xml");
 
         if (Files.isRegularFile(pom)) {
@@ -41,7 +40,7 @@ public class ProjectInfoExtractor {
         return basicProject(rootPath, "Unknown");
     }
 
-    private ProjectInfo<ProjectInfoSpringBoot> extractMaven(
+    private ProjectInfo extractMaven(
             Path rootPath,
             Path pom) throws Exception {
         Document document = parse(pom);
@@ -53,15 +52,12 @@ public class ProjectInfoExtractor {
 
         String springBootVersion = springBootVersion(project).orElse(null);
 
-        ProjectInfoSpringBoot springBoot = new ProjectInfoSpringBoot(
-                springBootVersion,
-                dependencies(project));
-
-        return new ProjectInfo<>(
+        return new ProjectInfo(
                 name,
                 "Maven",
                 javaVersion(project).orElse(null),
-                springBoot);
+                springBootVersion,
+                dependencies(project));
     }
 
     private Document parse(Path pom) throws Exception {
@@ -146,14 +142,15 @@ public class ProjectInfoExtractor {
         return children;
     }
 
-    private ProjectInfo<ProjectInfoSpringBoot> basicProject(
+    private ProjectInfo basicProject(
             Path rootPath,
             String buildTool) {
-        return new ProjectInfo<>(
+        return new ProjectInfo(
                 directoryName(rootPath),
                 buildTool,
                 null,
-                new ProjectInfoSpringBoot(null, Set.of()));
+                null,
+                Set.of());
     }
 
     private String directoryName(Path rootPath) {
