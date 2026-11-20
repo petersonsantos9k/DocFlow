@@ -14,6 +14,7 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [user] = useState<{ name: string } | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -39,6 +40,17 @@ export default function Header() {
     pathname === href
       ? "text-primary font-medium"
       : "text-on-surface-variant hover:text-on-surface";
+
+  const initials = user
+    ? user.name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part: string) => part[0])
+      .join("")
+      .toUpperCase()
+    : "";
+
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest border-b border-surface-variant">
@@ -66,9 +78,30 @@ export default function Header() {
 
         <div className="flex items-center gap-space-md">
 
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 cursor-pointer">
-            <User size={18} className="text-on-primary" aria-hidden="true" />
-          </div>
+          {user ? (
+            <Link
+              href="/app-generator"
+              aria-label="Minha conta"
+              className="w-8 h-8 shrink-0 rounded-full bg-secondary-container text-on-secondary-fixed font-label-mono text-code-sm font-semibold flex items-center justify-center hover:bg-secondary-fixed-dim transition-colors"
+            >
+              {initials}
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex px-space-sm py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors"
+              >
+                Entrar
+              </Link>
+              <Link
+                href="/signup"
+                className="inline-flex shrink-0 items-center justify-center bg-primary text-on-primary font-label-md text-label-md px-space-md py-space-sm rounded-lg hover:bg-primary-container transition-colors"
+              >
+                Criar conta
+              </Link>
+            </>
+          )}
 
           <button
             type="button"
@@ -93,11 +126,10 @@ export default function Header() {
 
       <nav
         id="mobile-menu"
-        className={`md:hidden absolute top-16 left-0 right-0 bg-surface-container-lowest border-b border-surface-variant shadow-lg px-margin py-space-sm flex flex-col transition-all duration-200 origin-top ${
-          open
-            ? "opacity-100 scale-y-100 pointer-events-auto"
-            : "opacity-0 scale-y-95 pointer-events-none"
-        }`}
+        className={`md:hidden absolute top-16 left-0 right-0 bg-surface-container-lowest border-b border-surface-variant shadow-lg px-margin py-space-sm flex flex-col transition-all duration-200 origin-top ${open
+          ? "opacity-100 scale-y-100 pointer-events-auto"
+          : "opacity-0 scale-y-95 pointer-events-none"
+          }`}
       >
         {NAV_LINKS.map(({ label, href }) => (
           <Link
