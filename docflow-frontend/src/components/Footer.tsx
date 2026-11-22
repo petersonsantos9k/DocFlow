@@ -1,14 +1,6 @@
 'use client'
 import { ArrowUp } from "lucide-react";
-import Link from "next/link";
 import { motion } from "motion/react";
-
-const FOOTER_LINKS = [
-  { label: "Architecture", href: "/features" },
-  { label: "CLI & SDK", href: "/how-it-works" },
-  { label: "Open Source", href: "/github" },
-  { label: "Developer Portal", href: "/login" },
-] as const;
 
 export default function Footer() {
   const year = new Date().getFullYear();

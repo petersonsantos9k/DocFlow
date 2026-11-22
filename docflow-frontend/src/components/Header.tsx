@@ -8,7 +8,10 @@ import { motion } from "motion/react";
 
 const NAV_LINKS = [
   { label: "How it Works", href: "#how-it-works" },
-  { label: "GitHub", href: "#github" },
+  {
+    label: "GitHub",
+    href: "https://github.com/PetersonSantos9K/DocFlow",
+  },
 ] as const;
 
 export default function Header() {
@@ -16,9 +19,6 @@ export default function Header() {
   const [user] = useState<{ name: string } | null>(null);
   const pathname = usePathname();
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -73,6 +73,9 @@ export default function Header() {
             <Link
               key={href}
               href={href}
+              onClick={() => setOpen(false)}
+              target={href.startsWith("http") ? "_blank" : undefined}
+              rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
               className={`group font-body-md text-body-md transition-colors ${linkClass(href)}`}
             >
               <span className="relative inline-block">
@@ -145,6 +148,9 @@ export default function Header() {
           <Link
             key={href}
             href={href}
+            onClick={() => setOpen(false)}
+            target={href.startsWith("http") ? "_blank" : undefined}
+            rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
             tabIndex={open ? 0 : -1}
             className={`py-space-md border-b border-surface-variant last:border-b-0 font-body-lg text-body-lg transition-colors ${linkClass(href)}`}
           >
