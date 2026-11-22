@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { Terminal } from "lucide-react";
 
-const PARSERS = ["Spring Boot 3.x", "Jakarta EE 10", "Micronaut 4.x", "Quarkus 3"] as const;
+const PARSERS = ["Java", "AST Analysis", "API Extraction", "Markdown"] as const;
 
 export default function Hero() {
   return (
     <section className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-xl md:py-space-2xl">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-center">
-        {/* Coluna esquerda */}
         <div className="lg:col-span-6 flex flex-col items-start gap-space-lg">
-          {/* Badge */}
           <div className="inline-flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low shadow-sm">
             <span className="w-2 h-2 rounded-full bg-secondary-fixed-dim" />
             <span className="font-label-mono text-label-mono text-on-surface uppercase tracking-wider">
@@ -17,18 +15,14 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Título */}
           <h1 className="font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary tracking-tight">
             Documentation shouldn&apos;t slow down development.
           </h1>
 
-          {/* Texto de apoio */}
           <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
-            Turn your Java repositories into clear, structured API documentation with the
-            power of static AST intelligence and specialized LLMs.
+           Turn your Java source code into clear, structured API documentation through automated code analysis and AI-powered generation.
           </p>
 
-          {/* Botões */}
           <div className="flex flex-wrap items-center gap-space-md pt-space-xs">
             <Link
               href="/app-generator"
@@ -47,10 +41,9 @@ export default function Hero() {
             </Link>
           </div>
 
-          {/* Parsers suportados */}
           <div className="w-full pt-space-md flex flex-col gap-space-xs">
             <span className="font-label-mono text-[11px] uppercase tracking-wider text-on-surface-variant">
-              Production-ready parsers
+              CORE CAPABILITIES
             </span>
             <ul className="flex flex-wrap items-center gap-space-xs">
               {PARSERS.map((parser) => (
@@ -65,7 +58,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Coluna direita: placeholder */}
         <div className="lg:col-span-6 w-full">
           <div
             className="w-full aspect-4/3 rounded-xl bg-primary-container shadow-xl"

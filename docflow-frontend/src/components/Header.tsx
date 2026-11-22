@@ -8,7 +8,6 @@ import { Menu, User, X } from "lucide-react";
 const NAV_LINKS = [
   { label: "Features", href: "/features" },
   { label: "How it Works", href: "/how-it-works" },
-  { label: "App / Generator", href: "/app-generator" },
   { label: "GitHub", href: "/github" },
 ] as const;
 
@@ -92,13 +91,13 @@ export default function Header() {
                 href="/login"
                 className="hidden sm:inline-flex px-space-sm py-space-sm font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors"
               >
-                Entrar
+                Log in
               </Link>
               <Link
                 href="/signup"
                 className="inline-flex shrink-0 items-center justify-center bg-primary text-on-primary font-label-md text-label-md px-space-md py-space-sm rounded-lg hover:bg-primary-container transition-colors"
               >
-                Criar conta
+                Sign up
               </Link>
             </>
           )}

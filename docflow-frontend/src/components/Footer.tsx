@@ -1,3 +1,4 @@
+import { ArrowUp } from "lucide-react";
 import Link from "next/link";
 
 const FOOTER_LINKS = [
@@ -11,36 +12,41 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-surface-container-low border-t border-surface-variant">
-      <div className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-2xl">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-xl">
-          {/* Status + copyright */}
-          <div className="flex flex-col gap-space-xs">
-            <div className="flex items-center gap-space-sm">
-              <span className="w-2 h-2 rounded-full bg-secondary-fixed-dim ring-2 ring-secondary/20" />
-              <span className="font-label-mono text-label-mono text-on-surface">
-                System operational • All models online
-              </span>
-            </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant">
-              © {year} DocFlow Inc. Engineered for developer rigor and zero-latency specs.
-            </p>
-          </div>
 
-          {/* Links */}
-          <nav aria-label="Footer" className="flex flex-wrap items-center gap-space-lg">
-            {FOOTER_LINKS.map(({ label, href }) => (
-              <Link
-                key={href}
-                href={href}
-                className="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors"
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
+    
+<footer className="w-full bg-surface-container-low">
+  <div className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-lg">
+    <div className="border-t border-surface-variant pt-space-lg">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
+        {/* Copyright */}
+        <p className="font-body-sm text-body-sm text-on-surface-variant">
+          © DocFlow · {year}
+        </p>
+
+        {/* Navigation */}
+        <div className="flex items-center gap-space-lg">
+          <a
+            href="#top"
+            className="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors"
+          >
+            Back to top
+            <ArrowUp size={14} />
+          </a>
+
+          <a
+            href="https://github.com/PetersonSantos9k/DocFlow"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors"
+          >
+            GitHub
+          </a>
         </div>
       </div>
-    </footer>
+    </div>
+  </div>
+</footer>
+
+
   );
 }
