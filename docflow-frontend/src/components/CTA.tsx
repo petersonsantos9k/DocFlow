@@ -7,7 +7,6 @@ export default function CallToAction() {
   return (
     <motion.section
       className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-2xl"
-      id="github"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.2 }}
