@@ -1,11 +1,20 @@
+'use client'
 import Link from "next/link";
 import { Terminal } from "lucide-react";
+import { motion } from "motion/react";
 
 const PARSERS = ["Java", "AST Analysis", "API Extraction", "Markdown"] as const;
 
 export default function Hero() {
   return (
-    <section className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-xl md:py-space-2xl">
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      viewport={{ once: false, amount: 0.2 }}
+      className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-xl md:py-space-2xl"
+      id="features"
+    >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-center">
         <div className="lg:col-span-6 flex flex-col items-start gap-space-lg">
           <div className="inline-flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low shadow-sm">
@@ -20,7 +29,7 @@ export default function Hero() {
           </h1>
 
           <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
-           Turn your Java source code into clear, structured API documentation through automated code analysis and AI-powered generation.
+            Turn your Java source code into clear, structured API documentation through automated code analysis and AI-powered generation.
           </p>
 
           <div className="flex flex-wrap items-center gap-space-md pt-space-xs">
@@ -65,6 +74,6 @@ export default function Hero() {
           />
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -1,5 +1,7 @@
+'use client'
 import { ArrowUp } from "lucide-react";
 import Link from "next/link";
+import { motion } from "motion/react";
 
 const FOOTER_LINKS = [
   { label: "Architecture", href: "/features" },
@@ -13,17 +15,19 @@ export default function Footer() {
 
   return (
 
-    
-<footer className="w-full bg-surface-container-low">
-  <div className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-lg">
-    <div className="border-t border-surface-variant pt-space-lg">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
-        {/* Copyright */}
+
+    <motion.footer
+      className="w-full bg-surface-container-low"
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <div className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-lg border-t border-surface-variant pt-space-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
         <p className="font-body-sm text-body-sm text-on-surface-variant">
           © DocFlow · {year}
         </p>
 
-        {/* Navigation */}
         <div className="flex items-center gap-space-lg">
           <a
             href="#top"
@@ -43,9 +47,7 @@ export default function Footer() {
           </a>
         </div>
       </div>
-    </div>
-  </div>
-</footer>
+    </motion.footer>
 
 
   );

@@ -1,5 +1,8 @@
+'use client'
+
 import type { ReactNode } from "react";
 import { BookOpen, FolderGit2, Network, type LucideIcon } from "lucide-react";
+import { motion } from "motion/react";
 
 type Step = {
   number: string;
@@ -74,7 +77,14 @@ const STEPS: Step[] = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="w-full bg-surface-container-low py-space-2xl">
+    <motion.section
+      id="how-it-works"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="w-full bg-surface-container-low py-space-2xl"
+    >
       <div className="max-w-7xl mx-auto px-margin md:px-margin-desktop flex flex-col gap-space-xl">
         <div className="flex flex-col items-start gap-space-xs max-w-2xl">
           <span className="font-label-mono text-label-mono text-secondary font-bold uppercase tracking-wider">
@@ -111,6 +121,6 @@ export default function HowItWorks() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

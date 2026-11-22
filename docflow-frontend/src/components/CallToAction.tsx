@@ -1,12 +1,19 @@
+'use client'
 import Link from "next/link";
 import { ArrowRight, Code } from "lucide-react";
-
+import { motion } from "motion/react";
 
 export default function CallToAction() {
   return (
-    <section className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-2xl">
+    <motion.section
+      className="max-w-7xl mx-auto px-margin md:px-margin-desktop py-space-2xl"
+      id="github"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+    >
       <div className="w-full bg-primary rounded-xl p-space-xl md:p-space-2xl shadow-xl flex flex-col items-center text-center gap-space-lg">
-        {/* Text */}
         <div className="flex flex-col items-center gap-space-xs max-w-2xl">
           <span className="font-label-mono text-code-sm text-secondary-fixed uppercase tracking-wider font-semibold">
             Get Started with DocFlow
@@ -22,7 +29,6 @@ export default function CallToAction() {
           </p>
         </div>
 
-        {/* Actions */}
         <div className="flex flex-col sm:flex-row items-center gap-space-md">
           <Link
             href="/app-generator"
@@ -43,6 +49,6 @@ export default function CallToAction() {
           </Link>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

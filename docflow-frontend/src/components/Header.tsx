@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, User, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { motion } from "motion/react";
 
 const NAV_LINKS = [
-  { label: "Features", href: "/features" },
-  { label: "How it Works", href: "/how-it-works" },
-  { label: "GitHub", href: "/github" },
+  { label: "How it Works", href: "#how-it-works" },
+  { label: "GitHub", href: "#github" },
 ] as const;
 
 export default function Header() {
@@ -52,7 +52,12 @@ export default function Header() {
 
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest border-b border-surface-variant">
+    <motion.header
+      initial={{ opacity: 0, y: -12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest border-b border-surface-variant"
+    >
       <div className="h-16 max-w-7xl mx-auto px-margin md:px-margin-desktop flex items-center justify-between">
         <div className="flex items-center gap-space-md ">
           <Link href="/" className="font-title-md text-title-md text-primary tracking-tight font-bold">
@@ -68,9 +73,15 @@ export default function Header() {
             <Link
               key={href}
               href={href}
-              className={`font-body-md text-body-md transition-colors ${linkClass(href)}`}
+              className={`group font-body-md text-body-md transition-colors ${linkClass(href)}`}
             >
-              {label}
+              <span className="relative inline-block">
+                {label}
+                <span
+                  aria-hidden="true"
+                  className="absolute -bottom-1 left-0 h-0-5 w-full origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                />
+              </span>
             </Link>
           ))}
         </nav>
@@ -141,6 +152,6 @@ export default function Header() {
           </Link>
         ))}
       </nav>
-    </header>
+    </motion.header>
   );
 }
